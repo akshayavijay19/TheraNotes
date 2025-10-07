@@ -27,6 +27,12 @@ def speech_therapy_chatbot():
             print(f"[OUTPUT] Score: {score}")
             print(f"[OUTPUT] Suggestion: {suggestion}")
             print()
+        elif 'struggling with r sound' in user_input_lower:
+            score = "3/5"
+            suggestion = "practice retroflex:Tongue tip curls back slightly without touching the palate."
+            print(f"[OUTPUT] Score: {score}")
+            print(f"[OUTPUT] Suggestion: {suggestion}")
+            print()
         else:
             print("[OUTPUT] No matching condition found. Please use 'stuttering' or 'calm and clear'")
             print()
