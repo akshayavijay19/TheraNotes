@@ -10,6 +10,12 @@ def generate_tongue_twisters():
     print("\n[OUTPUT] Generating 10 tongue twisters using AI...")
     print()
     
+    if not OPENAI_API_KEY or len(OPENAI_API_KEY) < 20:
+        print("[OUTPUT] Error: Valid OpenAI API key is required to generate tongue twisters.")
+        print("[OUTPUT] Please add a valid API key in the Secrets tab (Tools > Secrets).")
+        print()
+        return
+    
     try:
         response = openai.chat.completions.create(
             model="gpt-5",
@@ -20,17 +26,24 @@ def generate_tongue_twisters():
                 },
                 {
                     "role": "user",
-                    "content": "Generate 10 unique tongue twisters suitable for speech therapy practice. Make them varied in difficulty and focus on different sound patterns."
+                    "content": "Generate 10 unique tongue twisters suitable for speech therapy practice. Make them varied in difficulty and focus on different sound patterns. Number them 1-10."
                 }
             ],
         )
         
         tongue_twisters = response.choices[0].message.content
+        print(f"[OUTPUT] AI-Generated Tongue Twisters:")
         print(f"[OUTPUT] {tongue_twisters}")
         print()
         
     except Exception as e:
-        print(f"[OUTPUT] Error generating tongue twisters: {e}")
+        error_msg = str(e)
+        if "401" in error_msg or "invalid_api_key" in error_msg:
+            print("[OUTPUT] Error: The OpenAI API key is invalid.")
+            print("[OUTPUT] Please update your API key in the Secrets tab (Tools > Secrets).")
+            print("[OUTPUT] Get a valid key from: https://platform.openai.com/api-keys")
+        else:
+            print(f"[OUTPUT] Error generating tongue twisters: {e}")
         print()
 
 def speech_therapy_chatbot():
