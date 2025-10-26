@@ -1,3 +1,38 @@
+import os
+from openai import OpenAI
+
+# the newest OpenAI model is "gpt-5" which was released August 7, 2025.
+# do not change this unless explicitly requested by the user
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+openai = OpenAI(api_key=OPENAI_API_KEY)
+
+def generate_tongue_twisters():
+    print("\n[OUTPUT] Generating 10 tongue twisters using AI...")
+    print()
+    
+    try:
+        response = openai.chat.completions.create(
+            model="gpt-5",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a speech therapy assistant. Generate tongue twisters that are helpful for stuttering practice."
+                },
+                {
+                    "role": "user",
+                    "content": "Generate 10 unique tongue twisters suitable for speech therapy practice. Make them varied in difficulty and focus on different sound patterns."
+                }
+            ],
+        )
+        
+        tongue_twisters = response.choices[0].message.content
+        print(f"[OUTPUT] {tongue_twisters}")
+        print()
+        
+    except Exception as e:
+        print(f"[OUTPUT] Error generating tongue twisters: {e}")
+        print()
+
 def speech_therapy_chatbot():
     print("=" * 60)
     print("Speech Therapist - End of Session Follow-up Chatbot")
@@ -21,15 +56,18 @@ def speech_therapy_chatbot():
             print(f"[OUTPUT] Score: {score}")
             print(f"[OUTPUT] Suggestion: {suggestion}")
             print()
+            
+            option = input("Would you like to generate tongue twisters? (Type 'yes' or press Enter to continue): ").strip()
+            print(f"\n[INPUT] {option}")
+            
+            if option.lower() == 'yes':
+                generate_tongue_twisters()
+            else:
+                print()
+                
         elif 'calm and clear' in user_input_lower:
             score = "4/5"
             suggestion = "guided paced reading as practice"
-            print(f"[OUTPUT] Score: {score}")
-            print(f"[OUTPUT] Suggestion: {suggestion}")
-            print()
-        elif 'struggling with r sound' in user_input_lower:
-            score = "3/5"
-            suggestion = "practice retroflex:Tongue tip curls back slightly without touching the palate."
             print(f"[OUTPUT] Score: {score}")
             print(f"[OUTPUT] Suggestion: {suggestion}")
             print()
